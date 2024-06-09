@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -143,6 +144,7 @@ public class PlayController{
     private Competitors players;
     private Board board;
     int numberOfCells;
+    private Pane selectedPane = null;
 
     public PlayController(Competitors players) { // just use players to access data
         this.players = players;
@@ -269,6 +271,14 @@ public class PlayController{
             if (i != 0 && i != 6) {
                 Pane pane = paneList.get(i);
                 pane.setOnMouseClicked(event -> {
+                    // If there's a previously selected pane, reset its style or state here
+
+                    if (selectedPane != null) {
+                        hideDirection(selectedPane);
+                    }
+
+                    // Set the clicked pane as the selected pane
+                    selectedPane = pane;
                     try {
                         handleCellClick(pane, index);
                     } catch (EmptyCellException e) {
@@ -430,12 +440,7 @@ public class PlayController{
 
             // Show direction
             showDirection(pane);
-            for (int j = 0; j < paneList.size(); j++) {
-                if (j != index) {
-                    Pane paneAround = paneList.get(j);
-                    paneAround.setDisable(true);
-                }
-            }
+
         }
     }
 
@@ -493,6 +498,20 @@ public class PlayController{
         }
     }
 
+    public void hideDirection(Pane pane) {
+        // Retrieve the children of the Pane
+        List<Node> children = pane.getChildren();
+        // Loop through the children of the Pane
+        for (Node child : children) {
+            // Check if the child is an ImageView
+            if (child instanceof ImageView) {
+                ImageView imageView = (ImageView) child;
+                // Set the visibility of the ImageView to true
+                imageView.setVisible(false); 
+            }
+        }
+    }
+
     public void setDisplay(Board board){
         for (int i=0; i < board.getCells().length; i++){
             Pane pane = paneList.get(i);
@@ -502,10 +521,10 @@ public class PlayController{
                     if (child.getId().startsWith("numGems")) {
                         text.setText(Integer.toString(board.getCells()[i].getGemList().size()));
                     }if (child.getId().startsWith("small")) {
-                        text.setText("*".repeat(board.getCells()[i].getNumberOfSmallGems()));
+                        text.setText(String.join("", Collections.nCopies(board.getCells()[i].getNumberOfSmallGems(), "*")));
                     }
                     if (child.getId().startsWith("big")) {
-                        text.setText("*".repeat(board.getCells()[i].getNumberOfBigGems()));
+                        text.setText(String.join("", Collections.nCopies(board.getCells()[i].getNumberOfBigGems(), "*")));
                     }
                     
 
@@ -547,11 +566,12 @@ public class PlayController{
                             Text text = (Text) child; //downcasting
                             if (child.getId().startsWith("numGems")) {
                                 text.setText(Integer.toString(cell.getGemList().size()));
-                            }if (child.getId().startsWith("small")) {
-                                text.setText("*".repeat(cell.getNumberOfSmallGems()));
+                            }
+                            if (child.getId().startsWith("small")) {
+                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfSmallGems(), "*")));
                             }
                             if (child.getId().startsWith("big")) {
-                                text.setText("*".repeat(cell.getNumberOfBigGems()));
+                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfBigGems(), "*")));
                             }
                         }
                     }
@@ -572,10 +592,12 @@ public class PlayController{
                             Text text = (Text) child; //downcasting
                             if (child.getId().startsWith("numGems")) {
                                 text.setText(Integer.toString(cell.getGemList().size()));
-                            }if (child.getId().startsWith("small")) {
-                                text.setText("*".repeat(cell.getNumberOfSmallGems()));
-                            }if (child.getId().startsWith("big")) {
-                                text.setText("*".repeat(cell.getNumberOfBigGems()));
+                            }
+                            if (child.getId().startsWith("small")) {
+                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfSmallGems(), "*")));
+                            }
+                            if (child.getId().startsWith("big")) {
+                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfBigGems(), "*")));
                             }
                         }
                     }
