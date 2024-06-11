@@ -29,6 +29,7 @@ Mandarin Square Capturing is a strategic board game that challenges players to c
 ## Rules
 
 The gameboard consists of 10 squares, divided into 2 rows, and 2 half-circle on the 2 ends of the board:
+
 	- In mandarin capturing square for two players, there are two types of pieces: small gems and big gems. The number of big gems is fixed at 2. The number of small gems is fixed at 50.
 		
   	- Initially, each square has 5 small gems, and each half-circle has 1 big gem. Each small gem equals I point, and each big gem equals 5 points.
