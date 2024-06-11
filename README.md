@@ -17,11 +17,9 @@ Mandarin Square Capturing is a strategic board game that challenges players to c
 ## Features
 
 - Classic game rules
-- Single-player mode against AI
 - Two-player mode on the same device
 - Interactive graphical interface using JavaFX
 - Score tracking
-- Undo and redo functionality
 
 ## Rules
 <p>
