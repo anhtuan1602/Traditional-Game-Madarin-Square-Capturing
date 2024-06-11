@@ -30,8 +30,10 @@ Mandarin Square Capturing is a strategic board game that challenges players to c
 
 ### Prerequisites
 
+- Eclipse (or other java IDE)
 - Java Development Kit (JDK) 8 or later
 - Apache Maven (optional, for building the project)
+- JavaFX
 
 ### Steps
 
@@ -39,3 +41,7 @@ Mandarin Square Capturing is a strategic board game that challenges players to c
    ```bash
    git clone https://github.com/yourusername/Traditional-Game-Mandarin-Square-Capturing.git
    cd Traditional-Game-Mandarin-Square-Capturing
+
+2. **Lunch the game:**
+   Launch the game by running the main class ```bash Main.java.
+   
