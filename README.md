@@ -55,3 +55,6 @@ The gameboard consists of 10 squares, divided into 2 rows, and 2 half-circle on 
 
    Launch the game by running the main class `Main.java` in *Eclipse* (or other Java IDE).
    
+## Contributing
+
+Contributions are welcome! If you have suggestions for improvements or new features, feel free to open an issue or submit a pull request.
