@@ -49,7 +49,7 @@ The gameboard consists of 10 squares, divided into 2 rows, and 2 half-circle on 
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/Traditional-Game-Mandarin-Square-Capturing.git
+   git clone https://github.com/ML-K67-HUST/Traditional-Game-Madarin-Square-Capturing.git
 
 2. **Lunch the game:**
 
