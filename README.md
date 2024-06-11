@@ -6,13 +6,10 @@ Welcome to the Mandarin Square Capturing game! This project is a digital impleme
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
 - [Rules](#rules)
+- [Installation](#installation)
 - [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
-
+  
 ## Introduction
 
 Mandarin Square Capturing is a strategic board game that challenges players to capture squares on the board by placing stones. This digital version brings the classic game to your computer, allowing you to play against friends or AI.
@@ -53,9 +50,8 @@ The gameboard consists of 10 squares, divided into 2 rows, and 2 half-circle on 
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/yourusername/Traditional-Game-Mandarin-Square-Capturing.git
-   cd Traditional-Game-Mandarin-Square-Capturing
 
 2. **Lunch the game:**
 
-   Launch the game by running the main class `Main.java`.
+   Launch the game by running the main class `Main.java` in *Eclipse* (or other Java IDE).
    
