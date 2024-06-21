@@ -636,7 +636,7 @@ public class PlayController{
                             bigGem1.setVisible(false);
                         };
                         if(board.getCells()[6].getNumberOfBigGems() == 0){
-                            bigGem1.setVisible(false);
+                            bigGem2.setVisible(false);
                         };
                     }
 
