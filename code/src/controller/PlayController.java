@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -24,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -91,11 +91,16 @@ public class PlayController{
     private ImageView turnPlayer2;
 
     @FXML
+    private ImageView bigGem1;
+
+    @FXML
+    private ImageView bigGem2;
+
+    @FXML
     private Button btnHomeWinner;
 
     @FXML
     private Button btnPlayAgain;
-
 
     @FXML
     private AnchorPane endGameScreen;
@@ -158,7 +163,7 @@ public class PlayController{
         alert.setTitle("Exit Confirmation");
         alert.setHeaderText("Exit Game");
         alert.setContentText("Are you sure you want to exit?");
-        Optional<ButtonType> res = alert.showAndWait();
+        Optional<ButtonType> res = alert.showAndWait(); 
         if (res.get() == ButtonType.OK) {
             // quit game
             Stage stage = (Stage) btnExit.getScene().getWindow();
@@ -225,7 +230,7 @@ public class PlayController{
             Pane pane = paneList.get(i);
             List<Node> children = pane.getChildren();
             for (Node child : children) {
-                if (child instanceof ImageView) {
+                if (child instanceof ImageView && !child.getId().startsWith("big")) {
                     ImageView imageView = (ImageView) child;
                     imageView.setVisible(false);
                 }
@@ -271,7 +276,7 @@ public class PlayController{
             if (i != 0 && i != 6) {
                 Pane pane = paneList.get(i);
                 pane.setOnMouseClicked(event -> {
-                    // If there's a previously selected pane, reset its style or state here
+                    // Hide the direction of the previously selected pane
 
                     if (selectedPane != null) {
                         hideDirection(selectedPane);
@@ -490,7 +495,7 @@ public class PlayController{
         // Loop through the children of the Pane
         for (Node child : children) {
             // Check if the child is an ImageView
-            if (child instanceof ImageView) {
+            if (child instanceof ImageView && !child.getId().startsWith("big")) {
                 ImageView imageView = (ImageView) child;
                 // Set the visibility of the ImageView to true
                 imageView.setVisible(true); 
@@ -504,34 +509,47 @@ public class PlayController{
         // Loop through the children of the Pane
         for (Node child : children) {
             // Check if the child is an ImageView
-            if (child instanceof ImageView) {
+            if (child instanceof ImageView && !child.getId().startsWith("big")) {
                 ImageView imageView = (ImageView) child;
-                // Set the visibility of the ImageView to true
+                // Set the visibility of the ImageView to false
                 imageView.setVisible(false); 
             }
         }
     }
 
+    // Method to update gem images in a cell
     public void setDisplay(Board board){
+        // Ensure paneList is synchronized with board cells
+        if (paneList.size() != board.getCells().length) {
+            // Handle the mismatch appropriately, e.g., log an error or throw an exception
+            System.err.println("Error: paneList size does not match board cells count.");
+            return;
+        }
+
         for (int i=0; i < board.getCells().length; i++){
             Pane pane = paneList.get(i);
             for (Node child : pane.getChildren()) {
-                if (child instanceof Text) {
-                    Text text = (Text) child;
-                    if (child.getId().startsWith("numGems")) {
-                        text.setText(Integer.toString(board.getCells()[i].getGemList().size()));
-                    }if (child.getId().startsWith("small")) {
-                        text.setText(String.join("", Collections.nCopies(board.getCells()[i].getNumberOfSmallGems(), "*")));
-                    }
-                    if (child.getId().startsWith("big")) {
-                        text.setText(String.join("", Collections.nCopies(board.getCells()[i].getNumberOfBigGems(), "*")));
-                    }
-                    
-
-                         
+                if (child instanceof FlowPane) {
+                    FlowPane container = (FlowPane) child;
+                    container.getChildren().clear();
+                    for (int j = 0; j < board.getCells()[i].getNumberOfSmallGems(); j++) {
+                        ImageView gemImage = new ImageView(board.getCells()[i].getGemList().get(j).getGemImage());
+                        gemImage.setFitHeight(20);
+                        gemImage.setFitWidth(20);
+                        container.getChildren().add(gemImage);
+                    }  
                 }
             }
-
+            if (i == 0){
+                if(board.getCells()[i].getNumberOfBigGems() == 0){
+                    bigGem1.setVisible(false);
+                }
+            }
+            if (i == 6){
+                if(board.getCells()[i].getNumberOfBigGems() == 0){
+                    bigGem1.setVisible(false);
+                }
+            }
         }
         scorePlayer1.setText(Integer.toString(players.getPlayer1().getScore()));
         scorePlayer2.setText(Integer.toString(players.getPlayer2().getScore()));
@@ -567,12 +585,22 @@ public class PlayController{
                             if (child.getId().startsWith("numGems")) {
                                 text.setText(Integer.toString(cell.getGemList().size()));
                             }
-                            if (child.getId().startsWith("small")) {
-                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfSmallGems(), "*")));
-                            }
-                            if (child.getId().startsWith("big")) {
-                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfBigGems(), "*")));
-                            }
+                        }
+                        if (child instanceof FlowPane) {
+                            FlowPane container = (FlowPane) child;
+                            container.getChildren().clear();
+                            for (int j = 0; j < cell.getNumberOfSmallGems(); j++) {
+                                ImageView gemImage = new ImageView(cell.getGemList().get(j).getGemImage());
+                                gemImage.setFitHeight(20);
+                                gemImage.setFitWidth(20);
+                                container.getChildren().add(gemImage);
+                            } 
+                        }
+                        if(board.getCells()[0].getNumberOfBigGems() == 0){
+                            bigGem1.setVisible(false);
+                        }
+                        if(board.getCells()[6].getNumberOfBigGems() == 0){
+                            bigGem2.setVisible(false);
                         }
                     }
 
@@ -593,14 +621,25 @@ public class PlayController{
                             if (child.getId().startsWith("numGems")) {
                                 text.setText(Integer.toString(cell.getGemList().size()));
                             }
-                            if (child.getId().startsWith("small")) {
-                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfSmallGems(), "*")));
-                            }
-                            if (child.getId().startsWith("big")) {
-                                text.setText(String.join("", Collections.nCopies(cell.getNumberOfBigGems(), "*")));
-                            }
                         }
+                        if (child instanceof FlowPane) {
+                            FlowPane container = (FlowPane) child;
+                            container.getChildren().clear();
+                            for (int j = 0; j < cell.getNumberOfSmallGems(); j++) {
+                                ImageView gemImage = new ImageView(cell.getGemList().get(j).getGemImage());
+                                gemImage.setFitHeight(20);
+                                gemImage.setFitWidth(20);
+                                container.getChildren().add(gemImage);
+                            } 
+                        } 
+                        if(board.getCells()[0].getNumberOfBigGems() == 0){
+                            bigGem1.setVisible(false);
+                        };
+                        if(board.getCells()[6].getNumberOfBigGems() == 0){
+                            bigGem1.setVisible(false);
+                        };
                     }
+
                     System.out.println("location "+ itinerary.get(index).getLocation() + " " + itinerary.get(index).getGemList().size() + " " + cell.getNumberOfSmallGems() + " " + cell.getNumberOfBigGems());
 
                     if (index == longDisplay - 1){
