@@ -519,16 +519,16 @@ public class PlayController{
 
     // Method to update gem images in a cell
     public void setDisplay(Board board){
-        // Ensure paneList is synchronized with board cells
-        if (paneList.size() != board.getCells().length) {
-            // Handle the mismatch appropriately, e.g., log an error or throw an exception
-            System.err.println("Error: paneList size does not match board cells count.");
-            return;
-        }
 
         for (int i=0; i < board.getCells().length; i++){
             Pane pane = paneList.get(i);
             for (Node child : pane.getChildren()) {
+                if (child instanceof Text) {
+                    Text text = (Text) child; //downcasting
+                    if (child.getId().startsWith("numGems")) {
+                        text.setText(Integer.toString(board.getCells()[i].getGemList().size()));
+                    }
+                }
                 if (child instanceof FlowPane) {
                     FlowPane container = (FlowPane) child;
                     container.getChildren().clear();
@@ -543,11 +543,15 @@ public class PlayController{
             if (i == 0){
                 if(board.getCells()[i].getNumberOfBigGems() == 0){
                     bigGem1.setVisible(false);
+                }else{
+                    bigGem1.setVisible(true);
                 }
             }
             if (i == 6){
                 if(board.getCells()[i].getNumberOfBigGems() == 0){
-                    bigGem1.setVisible(false);
+                    bigGem2.setVisible(false);
+                }else{
+                    bigGem2.setVisible(true);
                 }
             }
         }
@@ -562,7 +566,7 @@ public class PlayController{
         List<Node> children = paneChosen.getChildren();
         // Set both direction buttons in the pane to invisible after clicking
         for (Node child : children) {
-            if (child instanceof ImageView) {
+            if (child instanceof ImageView && !child.getId().startsWith("big")) {
                 child.setVisible(false);
             }
         }
@@ -596,11 +600,19 @@ public class PlayController{
                                 container.getChildren().add(gemImage);
                             } 
                         }
-                        if(board.getCells()[0].getNumberOfBigGems() == 0){
-                            bigGem1.setVisible(false);
+                        if(id == 0){
+                            if(cell.getNumberOfBigGems() == 0){
+                                bigGem1.setVisible(false);
+                            }else{
+                                bigGem1.setVisible(true);
+                            }
                         }
-                        if(board.getCells()[6].getNumberOfBigGems() == 0){
-                            bigGem2.setVisible(false);
+                        if(id == 6){
+                            if(cell.getNumberOfBigGems() == 0){
+                                bigGem2.setVisible(false);
+                            }else{
+                                bigGem2.setVisible(true);
+                            }
                         }
                     }
 
@@ -632,12 +644,20 @@ public class PlayController{
                                 container.getChildren().add(gemImage);
                             } 
                         } 
-                        if(board.getCells()[0].getNumberOfBigGems() == 0){
-                            bigGem1.setVisible(false);
-                        };
-                        if(board.getCells()[6].getNumberOfBigGems() == 0){
-                            bigGem2.setVisible(false);
-                        };
+                        if(id == 0){
+                            if(cell.getNumberOfBigGems() == 0){
+                                bigGem1.setVisible(false);
+                            }else{
+                                bigGem1.setVisible(true);
+                            }
+                        }
+                        if(id == 6){
+                            if(cell.getNumberOfBigGems() == 0){
+                                bigGem2.setVisible(false);
+                            }else{
+                                bigGem2.setVisible(true);
+                            }
+                        }
                     }
 
                     System.out.println("location "+ itinerary.get(index).getLocation() + " " + itinerary.get(index).getGemList().size() + " " + cell.getNumberOfSmallGems() + " " + cell.getNumberOfBigGems());
